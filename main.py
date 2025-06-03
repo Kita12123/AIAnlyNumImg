@@ -1,36 +1,35 @@
 """
 数字画像認識AI
+
+学習方法：教師あり学習（正解データあり）
+
+以下のサイトの５ステップを参考に実装
+https://last-data.co.jp/media/machine-learning-procedure/
 """
-import numpy as np
-from sklearn.neural_network import MLPClassifier
-from sklearn.datasets import fetch_openml
-from sklearn.model_selection import train_test_split
-import matplotlib.pyplot as plt
+import mod
 
-# MNISTデータを取得してnumpyの配列型に変換
-mnist_x, mnist_y = fetch_openml('mnist_784', version=1, data_home="sklearn_MNIST_data", return_X_y=True)
-list_mnist_x = np.array(mnist_x)
-list_mnist_y = np.array(mnist_y)
 
-# 訓練用データとテストデータに分ける
-data_train, data_test, target_train, target_test = train_test_split(list_mnist_x, list_mnist_y, random_state=43)
+def main():
+    """
+    エントリーポイント
+    """
+    #STEP1：学習データの読み込み
+    samples, answers = mod.data.load()
 
-# 学習効率を上げるため、値の範囲を0～255から0～1となるように変換する
-data_train /= 255
-data_test /= 255
+    #STEP2：データの前処理
+    samples_adjust = mod.data.adjust(samples)
 
-# ニューラルネットワークによるクラス分類を行う
-# MLPClassifierクラスを使って、隠れ層１（ノード数：100）で
-# ニューラルネットワークを構築する
-# 今回使用するマシンのスペックの考慮や少しでも変化が分かりやすくするために
-# 学習回数の最大値(max_iter)を10としている
-clf = MLPClassifier(hidden_layer_sizes=(100,), verbose=True, max_iter=10, random_state=43)
+    #STEP3：データの分割
+    train_samples, test_samples, train_answers, test_answers = mod.data.split(samples_adjust, answers)
 
-# 訓練用データを使って学習させる
-clf.fit(data_train, target_train)
+    #STEP4：モデルの学習
+    clf = mod.model.train(train_samples, train_answers)
 
-# テストデータを使って数字画像認識を行う
-predict = clf.predict(data_test)
+    #STEP5：モデルの評価
+    score = mod.model.test(clf, test_samples, test_answers)
 
-# 正解率出力
-print(clf.score(data_test, target_test))
+    print("正解率: ", score)
+
+
+if __name__ == "__main__": # こちらのファイルを指定して、実行した場合
+    main()

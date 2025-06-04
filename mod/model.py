@@ -3,8 +3,6 @@
 """
 import numpy as np
 from sklearn.neural_network import MLPClassifier
-from sklearn.datasets import fetch_openml
-from sklearn.model_selection import train_test_split
 
 
 def train(samples: np.ndarray, answers: np.ndarray) -> MLPClassifier:

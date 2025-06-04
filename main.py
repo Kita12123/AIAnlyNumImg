@@ -6,7 +6,7 @@
 以下のサイトの５ステップを参考に実装
 https://last-data.co.jp/media/machine-learning-procedure/
 """
-import mod
+import mod # フォルダー名／ファイル名を指定してインポートすることができる
 
 
 def main():

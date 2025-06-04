@@ -2,11 +2,11 @@
 データ制御モジュール
 """
 # パッケージ読み込み
-from sklearn.datasets import fetch_openml
-import numpy as np
+import numpy as np # numpyは、数値解析によく使用されるパッケージ
+from sklearn.datasets import fetch_openml # sklearnは、機械学習に使用されるパッケージ
 from sklearn.model_selection import train_test_split
 
-# 関数定義
+# 関数定義：def <name>:で定義できる
 def load() -> tuple[np.ndarray]: # 戻り値のタイプ定義（なくてもいい）
     """データ読み込み
     MNISTデータを取得してnumpyの配列型に変換
